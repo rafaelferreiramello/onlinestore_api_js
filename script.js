@@ -2,6 +2,7 @@ document.querySelector("#button").addEventListener("click", () => {
     fetch('https://fakestoreapi.com/products/categories')
         .then(res=>res.json())
         .then(json=> {
+            document.querySelector("#categories").innerHTML = ""
             categoriesDiv = document.querySelector("#categories")
             json.forEach(value => {
                 button = document.createElement("button")
@@ -11,23 +12,24 @@ document.querySelector("#button").addEventListener("click", () => {
                     fetch(`https://fakestoreapi.com/products/category/${value}`)
                     .then(response => response.json())
                     .then(json => {
-                            json.forEach((value, index) => {
-                                document.querySelector("#product").innerHTML += 
-                                    `<div class="card" style="width: 18rem;">
-                                        <img src="${value.image}" class="card-img-top" alt="...">
+                        document.querySelector("#product").innerHTML = ""
+                        json.forEach((value, index) => {
+                            document.querySelector("#product").innerHTML += 
+                                `<div class="card d-flex flex-column align-content-center" style="width: 18rem;">
+                                    <img src="${value.image}" class="card-img-top" alt="...">
                                     <div class="card-body">
                                         <h5 class="card-title">${value.title}</h5>
-                                        <p class="card-text">${value.description}</p>
+                                        <p class="card-text">${value.description.slice(0, 200)}</p>
                                         <p class="card-price">$${value.price}</p>
                                         <button href="#" class="btn btn-primary addToCart">Add to the cart</button>
                                     </div>
-                                    </div>`
-                            })
-                            const addToCartButtons = document.querySelectorAll(".addToCart")
-                            for (let i = 0; i < addToCartButtons.length; i++) {
-                                const addButton = addToCartButtons[i]
-                                addButton.addEventListener("click", addToCart)
-                            }
+                                </div>`
+                        })
+                        const addToCartButtons = document.querySelectorAll(".addToCart")
+                        for (let i = 0; i < addToCartButtons.length; i++) {
+                            const addButton = addToCartButtons[i]
+                            addButton.addEventListener("click", addToCart)
+                        }
                     })
     
                 })
@@ -113,7 +115,9 @@ function updateCartTotal() {
         const cartRow = cartRows[i]
         const itemPrice = cartRow.querySelector(".cartPrice")
         const itemQuantity = cartRow.querySelector(".cartQuantity")
-        const price = parseFloat(itemPrice.innerText.replace("$", ""))
+        console.log(itemPrice)
+        const price = parseFloat(itemPrice.innerHTML.replace("$", ""))
+        console.log(price)
         const quantity = itemQuantity.value
         total = total + (price * quantity)
     }
