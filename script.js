@@ -69,6 +69,8 @@ function addToCart(event) {
     const imageSrc = shopItem.querySelector(".card-img-top").src
     addItemToCart(title, price, imageSrc)
     updateCartTotal()
+    const shoppingCartButton = document.querySelector("#shoppingCartButton")
+    shoppingCartButton.click()
 }
 
 function addItemToCart (title, price, imageSrc) {
@@ -115,9 +117,7 @@ function updateCartTotal() {
         const cartRow = cartRows[i]
         const itemPrice = cartRow.querySelector(".cartPrice")
         const itemQuantity = cartRow.querySelector(".cartQuantity")
-        console.log(itemPrice)
         const price = parseFloat(itemPrice.innerHTML.replace("$", ""))
-        console.log(price)
         const quantity = itemQuantity.value
         total = total + (price * quantity)
     }
